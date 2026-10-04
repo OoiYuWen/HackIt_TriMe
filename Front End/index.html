@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quest SG — Practise your Mother Tongue</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div class="wrap">
+
+    <main class="main">
+
+      <!-- LEFT: navy brand panel -->
+      <section class="brand">
+        <a href="index.html" class="logo">
+          <span class="logo-mark">Q</span>
+          <span class="logo-text">Quest SG</span>
+        </a>
+
+        <div class="brand-body">
+          <div class="intro">
+            <h1>Practise your Mother Tongue, one quest at a time.</h1>
+            <p>Order kopi, chat with Ah Ma, survive CNY visiting. Roleplay real Singapore moments with an AI buddy who never judges.</p>
+            <ul class="ticks">
+              <li>Singlish mixing welcome</li>
+              <li>Mistakes stay private</li>
+            </ul>
+          </div>
+          <!--<img class="hero-art" src="images/kopi-hero.svg"
+               alt="A kopi cup at a hawker stall with greetings in Mandarin, Malay and Tamil">-->
+        </div>
+      </section>
+
+      <!-- RIGHT: the three main buttons -->
+      <section class="actions">
+        <div class="actions-inner">
+          <h2>The shiok-est way to practise your Mother Tongue!</h2>
+          <p class="sub">Start your first quest in under a minute.</p>
+
+          <a href="register.html" class="btn btn-primary">Get started</a>
+          <a href="login.html" class="btn btn-outline">I already have an account</a>
+
+          <div class="divider">or</div>
+
+          <button type="button" class="btn btn-dark" id="guestBtn">Continue as guest</button>
+          <p class="guest-note">Guest mode is fully anonymous. No profile, no one sees your mistakes. Just practise.</p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- BOTTOM: language strip -->
+    <nav class="languages" aria-label="Languages">
+      <button type="button" class="lang" data-lang="zh"><span class="badge badge-orange">华</span>Mandarin</button>
+      <button type="button" class="lang" data-lang="ms"><span class="badge badge-teal">Ms</span>Malay</button>
+      <button type="button" class="lang" data-lang="ta"><span class="badge badge-yellow">த</span>Tamil</button>
+      <span class="lang lang-soon"><span class="badge badge-navy">闽</span>Hokkien (soon)</span>
+      <span class="lang lang-soon"><span class="badge badge-peach">粤</span>Cantonese (soon)</span>
+    </nav>
+
+  </div>
+
+  <script>
+    // GUEST: clear any old login, mark the user as a guest, go to the quest board
+    document.getElementById("guestBtn").addEventListener("click", () => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("UserID");
+      localStorage.setItem("Role", "Guest");
+      window.location.href = "pages/home.html";
+    });
+
+    // LANGUAGES: remember which language they picked, then go to sign in
+    document.querySelectorAll(".lang[data-lang]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        localStorage.setItem("Language", btn.dataset.lang);
+        window.location.href = "login.html";
+      });
+    });
+  </script>
+</body>
+</html>

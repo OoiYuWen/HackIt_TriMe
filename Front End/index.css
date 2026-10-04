@@ -1,0 +1,261 @@
+/* ---------- Colours (change them here once, used everywhere) ---------- */
+:root {
+  --mango: #F28C28;
+  --mango-dark: #C2610F;
+  --yellow: #FFC93C;
+  --teal: #2BA58A;
+  --teal-dark: #17664F;
+  --teal-light: #E3F4EF;
+  --navy: #1F2A44;
+  --navy-dark: #0F1626;
+  --cream: #FFF8EE;
+  --sand: #DCCFB8;
+  --muted: #5A6378;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--navy);
+  font-family: "DM Sans", "PingFang SC", "Noto Sans SC", sans-serif;
+}
+
+h1, h2, .logo-text {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 700;
+}
+
+.wrap {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;       /* panels stack on top of each other on phones */
+}
+
+/* ---------- Left navy panel ---------- */
+.brand {
+  flex: 1 1 520px;
+  padding: 44px 56px;
+  background: var(--navy);
+  color: var(--cream);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--cream);
+  text-decoration: none;
+}
+
+.logo-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--mango);
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+}
+
+.logo-text { font-size: 24px; }
+
+.brand-body {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 32px;
+}
+
+.intro {
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.intro h1 {
+  margin: 0;
+  font-size: clamp(36px, 4vw, 50px);
+  line-height: 1.05;
+}
+
+.intro p {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.6;
+  color: #D9DEE8;
+}
+
+.ticks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  color: #D9DEE8;
+}
+
+.ticks li::before {
+  content: "✓";
+  color: var(--yellow);
+  font-weight: 700;
+  margin-right: 8px;
+}
+
+.hero-art {
+  flex: 1 1 240px;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+/* ---------- Right panel ---------- */
+.actions {
+  flex: 1 1 400px;
+  padding: 48px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.actions-inner {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.actions-inner h2 {
+  margin: 0;
+  font-size: 34px;
+  line-height: 1.15;
+}
+
+.sub {
+  margin: 0 0 8px;
+  color: var(--muted);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  height: 54px;
+  border-radius: 14px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: inherit;
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn:active {               /* "pressed down" effect */
+  transform: translateY(4px);
+  box-shadow: none;
+}
+
+.btn:focus-visible,
+.lang:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 3px;
+}
+
+.btn-primary { background: var(--mango); color: var(--navy); box-shadow: 0 4px 0 var(--mango-dark); }
+.btn-outline { background: #FFFFFF; color: var(--navy); border: 2px solid var(--sand); box-shadow: 0 4px 0 var(--sand); }
+.btn-dark    { background: var(--navy); color: var(--cream); box-shadow: 0 4px 0 var(--navy-dark); }
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #E3D7C1;
+}
+
+.guest-note {
+  margin: 4px 0 0;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--teal-light);
+  color: var(--teal-dark);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ---------- Language strip ---------- */
+.languages {
+  border-top: 1px solid #EADFCB;
+  background: #FFFFFF;
+  padding: 18px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 36px;
+}
+
+.lang {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  font: inherit;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.lang:hover { color: var(--navy); }
+.lang-soon  { color: #737C8F; cursor: default; }
+
+.badge {
+  width: 36px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.badge-orange { background: var(--mango); color: var(--navy); }
+.badge-teal { background: var(--teal); color: #FFFFFF; }
+.badge-yellow { background: var(--yellow); color: var(--navy); }
+.badge-soon { background: #ECE6DA; color: #8A93A6;}
+.badge-navy  { background: var(--navy); color: var(--cream); }
+.badge-peach { background: #FFE4C4; color: #8A3D06; }
+.lang-soon { color: #737C8F; cursor: default; opacity: 0.75; }
+
+/* ---------- Phones ---------- */
+@media (max-width: 600px) {
+  .brand   { padding: 32px 24px; }
+  .actions { padding: 36px 20px; }
+  .actions-inner h2 { font-size: 28px; }
+}
