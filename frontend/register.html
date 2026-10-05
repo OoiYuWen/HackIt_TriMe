@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quest SG — Create Account</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- LEFT: navy brand panel (same as sign-in page) -->
+    <section class="brand">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">Q</span>
+        <span class="logo-text">Quest SG</span>
+      </a>
+
+      <div class="brand-body">
+        <h1>Your first quest is waiting.</h1>
+        <p>Create an account to save your XP, keep your streak, and track the mistakes you've fixed.</p>
+        <div class="chips">
+          <span class="chip chip-active">华语</span>
+          <span class="chip">Bahasa Melayu</span>
+          <span class="chip">தமிழ்</span>
+        </div>
+      </div>
+
+      <ul class="ticks">
+        <li>Free to use</li>
+        <li>Progress saved across devices</li>
+      </ul>
+    </section>
+
+    <!-- RIGHT: create account form -->
+    <section class="form-side">
+      <div class="form-box">
+        <h2>Create your account</h2>
+        <p class="sub">It takes less than a minute.</p>
+
+        <form id="registerForm" novalidate>
+          <label for="name">Nickname</label>
+          <input type="text" id="name" placeholder="What should we call you?" autocomplete="nickname" required>
+
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@email.com" autocomplete="email" required>
+
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="At least 6 characters" autocomplete="new-password" required>
+
+          <label for="confirm">Confirm password</label>
+          <input type="password" id="confirm" placeholder="Type it again" autocomplete="new-password" required>
+
+          <fieldset class="lang-pick">
+            <legend>Which language do you want to practise?</legend>
+            <label class="lang-option">
+              <input type="radio" name="lang" value="zh" checked>
+              <span>华语 Mandarin</span>
+            </label>
+            <label class="lang-option">
+              <input type="radio" name="lang" value="ms">
+              <span>Bahasa Melayu</span>
+            </label>
+            <label class="lang-option">
+              <input type="radio" name="lang" value="ta">
+              <span>தமிழ் Tamil</span>
+            </label>
+          </fieldset>
+
+          <p class="form-error" id="registerError"></p>
+
+          <button type="submit" class="btn btn-primary" id="registerBtn">Create account</button>
+        </form>
+
+        <div class="divider">or</div>
+
+        <button type="button" class="btn btn-outline" id="guestBtn">Continue as guest</button>
+
+        <p class="switch-line">Already have an account? <a href="login.html">Sign in</a></p>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // DEMO_MODE = true: no backend or Firebase yet, so we just save the details
+    // in the browser and go to the quest board. Swap this for Firebase later.
+    const DEMO_MODE = true;
+
+    // If the user picked a language on the front page, select it here too
+    const savedLang = localStorage.getItem("Language");
+    if (savedLang) {
+      const radio = document.querySelector(`input[name="lang"][value="${savedLang}"]`);
+      if (radio) radio.checked = true;
+    }
+
+    const form = document.getElementById("registerForm");
+    const errorEl = document.getElementById("registerError");
+    const registerBtn = document.getElementById("registerBtn");
+
+    function showError(message) {
+      errorEl.textContent = message;
+      errorEl.style.display = "block";
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();                 // stop the page from reloading
+      errorEl.style.display = "none";
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const confirm = document.getElementById("confirm").value;
+      const lang = document.querySelector('input[name="lang"]:checked').value;
+
+      // ---- Check the form before creating the account ----
+      if (!name || !email || !password || !confirm) {
+        return showError("Please fill in all the boxes.");
+      }
+      if (!email.includes("@") || !email.includes(".")) {
+        return showError("That email doesn't look right.");
+      }
+      if (password.length < 6) {
+        return showError("Your password needs at least 6 characters.");
+      }
+      if (password !== confirm) {
+        return showError("The two passwords don't match.");
+      }
+
+      // ---- Create the account ----
+      if (DEMO_MODE) {
+        localStorage.setItem("token", "demo-token");
+        localStorage.setItem("Role", "Learner");
+        localStorage.setItem("UserID", "demo-user");
+        localStorage.setItem("Name", name);
+        localStorage.setItem("Language", lang);
+        window.location.href = `pages/home.html?lang=${lang}`;
+      }
+    });
+
+    // ---- Guest (same as the other pages) ----
+    document.getElementById("guestBtn").addEventListener("click", () => {
+      const lang = document.querySelector('input[name="lang"]:checked').value;
+      localStorage.removeItem("token");
+      localStorage.removeItem("UserID");
+      localStorage.setItem("Role", "Guest");
+      localStorage.setItem("Language", lang);
+      window.location.href = `pages/home.html?lang=${lang}`;
+    });
+  </script>
+</body>
+</html>

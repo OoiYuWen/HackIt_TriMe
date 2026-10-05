@@ -1,0 +1,319 @@
+/* ---------- Colours ---------- */
+:root {
+  --mango: #F28C28;
+  --mango-dark: #C2610F;
+  --yellow: #FFC93C;
+  --teal-dark: #17664F;
+  --teal-light: #E3F4EF;
+  --navy: #1F2A44;
+  --cream: #FFF8EE;
+  --sand: #DCCFB8;
+  --muted: #5A6378;
+  --error: #B42318;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--navy);
+  font-family: "DM Sans", "PingFang SC", "Noto Sans SC", sans-serif;
+}
+
+h1, h2, .logo-text {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 700;
+}
+
+.wrap {
+  min-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;          /* panels stack on phones */
+}
+
+/* ---------- Left navy panel ---------- */
+.brand {
+  flex: 1 1 420px;
+  padding: 56px;
+  background: var(--navy);
+  color: var(--cream);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--cream);
+  text-decoration: none;
+}
+
+.logo-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--mango);
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+}
+
+.logo-text { font-size: 24px; }
+
+.brand-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 480px;
+}
+
+.brand-body h1 {
+  margin: 0;
+  font-size: clamp(36px, 4vw, 52px);
+  line-height: 1.05;
+}
+
+.brand-body p {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #D9DEE8;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid #56617A;
+  font-weight: 500;
+}
+
+.chip-active {
+  background: var(--mango);
+  border-color: var(--mango);
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.ticks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  font-size: 15px;
+  color: #D9DEE8;
+}
+
+.ticks li::before {
+  content: "✓";
+  color: var(--yellow);
+  font-weight: 700;
+  margin-right: 8px;
+}
+
+/* ---------- Right form panel ---------- */
+.form-side {
+  flex: 1 1 420px;
+  padding: 48px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-box {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-box h2 {
+  margin: 0;
+  font-size: 34px;
+}
+
+.sub {
+  margin: -12px 0 0;
+  color: var(--muted);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+label {
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+input {
+  height: 48px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid var(--sand);
+  background: #FFFFFF;
+  font: inherit;
+  font-size: 16px;
+  color: var(--navy);
+}
+
+input:focus {
+  outline: 3px solid var(--mango);
+  outline-offset: 1px;
+  border-color: var(--mango);
+}
+
+.forgot {
+  align-self: flex-end;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.form-error {
+  display: none;            /* shown by the script when login fails */
+  margin: 4px 0 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #FDECEA;
+  color: var(--error);
+  font-size: 14px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  height: 52px;
+  border-radius: 14px;
+  border: none;
+  font: inherit;
+  font-weight: 700;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.btn:active { transform: translateY(3px); box-shadow: none; }
+.btn:disabled { opacity: 0.6; cursor: wait; }
+.btn:focus-visible { outline: 3px solid var(--teal-dark); outline-offset: 3px; }
+
+.btn-primary {
+  margin-top: 12px;
+  background: var(--mango);
+  color: var(--navy);
+  box-shadow: 0 4px 0 var(--mango-dark);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--navy);
+  border: 1.5px solid var(--navy);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #E3D7C1;
+}
+
+.guest-note {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--teal-light);
+  color: var(--teal-dark);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.switch-line {
+  margin: 0;
+  text-align: center;
+  color: var(--muted);
+}
+
+.switch-line a {
+  color: var(--navy);
+  font-weight: 700;
+}
+
+/* ---------- Phones ---------- */
+@media (max-width: 600px) {
+  .brand { padding: 32px 24px; }
+  .form-box h2 { font-size: 28px; }
+}
+
+/* ---------- Language picker (register page) ---------- */
+.lang-pick {
+  border: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lang-pick legend {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.lang-option {
+  margin: 0;
+  cursor: pointer;
+}
+
+.lang-option input {
+  position: absolute;      /* hide the round radio dot, but keep it usable */
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.lang-option span {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--sand);
+  background: #FFFFFF;
+  font-weight: 500;
+}
+
+.lang-option input:checked + span {
+  background: var(--mango);
+  border-color: var(--mango);
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.lang-option input:focus-visible + span {
+  outline: 3px solid var(--teal-dark);
+  outline-offset: 2px;
+}

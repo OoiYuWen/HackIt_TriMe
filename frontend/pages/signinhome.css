@@ -1,0 +1,346 @@
+/* ---------- Colours ---------- */
+:root {
+  --mango: #F28C28;
+  --mango-dark: #C2610F;
+  --yellow: #FFC93C;
+  --teal: #2BA58A;
+  --teal-dark: #17664F;
+  --teal-light: #E3F4EF;
+  --navy: #1F2A44;
+  --cream: #FFF8EE;
+  --sand: #DCCFB8;
+  --line: #EADFCB;
+  --muted: #5A6378;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--navy);
+  font-family: "DM Sans", "PingFang SC", "Noto Sans SC", "Noto Sans Tamil", sans-serif;
+  padding-bottom: 84px;          /* space so the bottom nav doesn't cover content */
+}
+
+h1, h2, h3, .logo-text {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 700;
+}
+
+/* ---------- Top bar ---------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--cream);
+  border-bottom: 1px solid var(--line);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--navy);
+  text-decoration: none;
+}
+
+.logo-mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: var(--mango);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.logo-words { display: flex; flex-direction: column; }
+.logo-text { font-size: 20px; line-height: 1.1; }
+.logo-tag { font-size: 12px; color: var(--muted); }
+
+.profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #FFFFFF;
+  color: var(--navy);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+/* ---------- Page layout ---------- */
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 24px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ---------- Welcome ---------- */
+.welcome {
+  background: var(--navy);
+  color: var(--cream);
+  border-radius: 24px;
+  padding: 36px 28px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.wave { margin: 0; font-size: 40px; }
+
+.welcome h1 {
+  margin: 0;
+  font-size: clamp(28px, 5vw, 38px);
+  line-height: 1.1;
+}
+
+.welcome p {
+  margin: 0;
+  max-width: 460px;
+  line-height: 1.6;
+  color: #D9DEE8;
+}
+
+.guest-banner {
+  margin-top: 6px !important;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #34405C;
+  font-size: 14px;
+}
+
+.guest-banner a { color: var(--yellow); font-weight: 700; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  padding: 0 24px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.btn:active { transform: translateY(3px); box-shadow: none; }
+.btn:focus-visible,
+.nav-item:focus-visible,
+.profile-btn:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 3px;
+}
+
+.btn-primary {
+  background: var(--mango);
+  color: var(--navy);
+  box-shadow: 0 4px 0 var(--mango-dark);
+}
+
+/* ---------- Sections ---------- */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  scroll-margin-top: 90px;      /* so the sticky top bar doesn't cover it when scrolling to #starter */
+}
+
+.section-title {
+  margin: 0;
+  font-size: 20px;
+}
+
+/* ---------- Starter quest card ---------- */
+.quest-card {
+  background: #FFFFFF;
+  border: 2px solid var(--mango);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.quest-tag {
+  font-size: 13px;
+  font-weight: 700;
+  color: #8A3D06;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.quest-card h3 { margin: 0; font-size: 22px; }
+
+.quest-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.quest-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.pill {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #F1E8D8;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.pill-xp { background: var(--yellow); }
+
+.quest-card .btn { align-self: flex-start; margin-top: 4px; }
+
+/* ---------- Locked quests ---------- */
+.locked-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.locked-item {
+  padding: 16px;
+  border-radius: 16px;
+  border: 1.5px dashed #B9AA8E;
+  background: #F6EFE2;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+/* ---------- Journey / progress ---------- */
+.journey {
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.journey-level {
+  flex: 1 1 280px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.journey-level > div { flex: 1; }
+
+.level-badge {
+  width: 56px;
+  height: 56px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--yellow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.journey-name { margin: 0 0 8px; font-weight: 700; font-size: 17px; }
+.journey-small { margin: 6px 0 0; font-size: 13px; color: var(--muted); }
+
+.xp-bar {
+  height: 10px;
+  border-radius: 999px;
+  background: #F1E8D8;
+  overflow: hidden;
+}
+
+.xp-fill {
+  width: 0%;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--teal);
+}
+
+.journey-stats { display: flex; gap: 28px; }
+
+.stat { display: flex; flex-direction: column; align-items: center; }
+
+.stat-num {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+}
+
+.stat-label { font-size: 13px; color: var(--muted); }
+
+/* ---------- Bottom nav ---------- */
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  background: #FFFFFF;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+}
+
+.nav-item {
+  flex: 1;
+  max-width: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 4px;
+  border-radius: 12px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.nav-icon { font-size: 20px; }
+
+.nav-item.active {
+  background: #FFE4C4;
+  color: var(--navy);
+}
+
+/* ---------- Phones ---------- */
+@media (max-width: 520px) {
+  .topbar { padding: 12px 16px; }
+  .logo-tag { display: none; }        /* hide the tagline on small screens */
+  .welcome { padding: 28px 20px; }
+}

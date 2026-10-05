@@ -64,21 +64,28 @@
   </div>
 
   <script>
-    // GUEST: clear any old login, mark the user as a guest, go to the quest board
-    document.getElementById("guestBtn").addEventListener("click", () => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("UserID");
-      localStorage.setItem("Role", "Guest");
-      window.location.href = "pages/home.html";
-    });
+  // GUEST: clear any old login, mark the user as a guest, go to the quest board
+  document.getElementById("guestBtn").addEventListener("click", () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("UserID");
+    localStorage.setItem("Role", "Guest");
+    const lang = localStorage.getItem("Language") || "zh";   // default: Mandarin
+    window.location.href = `pages/home.html?lang=${lang}`;
+  });
 
-    // LANGUAGES: remember which language they picked, then go to sign in
-    document.querySelectorAll(".lang[data-lang]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        localStorage.setItem("Language", btn.dataset.lang);
-        window.location.href = "login.html";
-      });
+  // LANGUAGES: remember the choice, then open the quest board in that language
+  document.querySelectorAll(".lang[data-lang]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const lang = btn.dataset.lang;                 // "zh", "ms" or "ta"
+      localStorage.setItem("Language", lang);
+
+      // Not signed in yet? Treat them as a guest so they can try it straight away
+      if (!localStorage.getItem("token")) {
+        localStorage.setItem("Role", "Guest");
+      }
+      window.location.href = `pages/home.html?lang=${lang}`;
     });
-  </script>
+  });
+ </script>
 </body>
 </html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quest SG — Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="signinhome.css">
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <a href="home.html" class="logo">
+      <span class="logo-mark">Q</span>
+      <span class="logo-words">
+        <span class="logo-text">Quest SG</span>
+        <span class="logo-tag">Learn. Play. Speak Singapore.</span>
+      </span>
+    </a>
+    <a href="profile.html" class="profile-btn" id="profileBtn">
+      <span class="avatar" id="avatar">?</span>
+      <span id="profileLabel">Profile</span>
+    </a>
+  </header>
+
+  <main class="page">
+
+    <!-- WELCOME -->
+    <section class="welcome">
+      <p class="wave">👋</p>
+      <h1 id="welcomeTitle">Welcome to Quest SG!</h1>
+      <p>Your Singapore journey starts here. Complete real-life quests, practise with AI, and earn XP along the way.</p>
+      <a href="#starter" class="btn btn-primary">Start your first quest →</a>
+      <p class="guest-banner" id="guestBanner" hidden>
+        You're playing as a guest. <a href="../register.html">Create an account</a> to save your progress.
+      </p>
+    </section>
+
+    <!-- STARTER QUEST -->
+    <section class="section" id="starter">
+      <h2 class="section-title">🗺️ Starter quest</h2>
+
+      <article class="quest-card">
+        <span class="quest-tag" id="starterTag">Hawker centre · Easy</span>
+        <h3 id="starterTitle">☕ Order kopi at the hawker centre</h3>
+        <p id="starterDesc">Practise ordering a drink naturally in Mandarin.</p>
+        <div class="quest-meta">
+          <span class="pill pill-xp" id="starterXp">⭐ +40 XP</span>
+          <span class="pill">⏱ 5 min</span>
+        </div>
+        <a href="quest.html" class="btn btn-primary" id="starterBtn">Start quest</a>
+      </article>
+    </section>
+
+    <!-- LOCKED QUESTS -->
+    <section class="section">
+      <h2 class="section-title">🔒 Complete quests to unlock more</h2>
+      <div class="locked-grid" id="lockedGrid">
+        <!-- filled in by the script -->
+      </div>
+    </section>
+
+    <!-- PROGRESS -->
+    <section class="section">
+      <h2 class="section-title">🏆 Your journey</h2>
+      <div class="journey">
+        <div class="journey-level">
+          <span class="level-badge" id="levelNum">1</span>
+          <div>
+            <p class="journey-name" id="levelName">Level 1 — Newcomer</p>
+            <div class="xp-bar"><div class="xp-fill" id="xpFill"></div></div>
+            <p class="journey-small" id="xpNext">100 XP to Level 2</p>
+          </div>
+        </div>
+        <div class="journey-stats">
+          <div class="stat"><span class="stat-num" id="xpTotal">0</span><span class="stat-label">XP</span></div>
+          <div class="stat"><span class="stat-num" id="questsDone">0</span><span class="stat-label">Quests completed</span></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav" aria-label="Main">
+    <a href="home.html" class="nav-item active"><span class="nav-icon">🏠</span>Home</a>
+    <a href="quests.html" class="nav-item"><span class="nav-icon">🗺</span>Quests</a>
+    <a href="review.html" class="nav-item"><span class="nav-icon">📖</span>Review</a>
+    <a href="profile.html" class="nav-item"><span class="nav-icon">👤</span>Profile</a>
+  </nav>
+
+  <script>
+    // ---------- 1. Who is this, and which language? ----------
+    const LANG_NAMES = { zh: "Mandarin", ms: "Malay", ta: "Tamil" };
+    const params = new URLSearchParams(window.location.search);
+    let lang = params.get("lang") || localStorage.getItem("Language") || "zh";
+    if (!LANG_NAMES[lang]) lang = "zh";
+    localStorage.setItem("Language", lang);
+
+    const role = localStorage.getItem("Role");
+    const name = localStorage.getItem("Name");
+
+    // Nobody signed in at all? Send them back to the front page.
+    if (!role) window.location.href = "../index.html";
+
+    if (role === "Guest") {
+      document.getElementById("profileLabel").textContent = "Guest";
+      document.getElementById("guestBanner").hidden = false;
+    } else if (name) {
+      document.getElementById("welcomeTitle").textContent = `Welcome to Quest SG, ${name}!`;
+      document.getElementById("avatar").textContent = name.charAt(0).toUpperCase();
+    }
+
+    // ---------- 2. Progress (starts at 0 for new users) ----------
+    const xp = Number(localStorage.getItem("XP")) || 0;
+    const questsDone = Number(localStorage.getItem("QuestsDone")) || 0;
+    const XP_PER_LEVEL = 100;
+    const LEVEL_NAMES = ["Newcomer", "Kopi Beginner", "Kopitiam Regular", "Ah Ma's Favourite", "Local Legend"];
+
+    const level = Math.floor(xp / XP_PER_LEVEL) + 1;
+    const levelName = LEVEL_NAMES[Math.min(level - 1, LEVEL_NAMES.length - 1)];
+    const xpIntoLevel = xp % XP_PER_LEVEL;
+
+    document.getElementById("levelNum").textContent = level;
+    document.getElementById("levelName").textContent = `Level ${level} — ${levelName}`;
+    document.getElementById("xpTotal").textContent = xp;
+    document.getElementById("questsDone").textContent = questsDone;
+    document.getElementById("xpFill").style.width = `${(xpIntoLevel / XP_PER_LEVEL) * 100}%`;
+    document.getElementById("xpNext").textContent = `${XP_PER_LEVEL - xpIntoLevel} XP to Level ${level + 1}`;
+
+    // ---------- 3. Load quests for this language ----------
+    const ICONS = { "Hawker centre": "☕", "Family": "🏠", "Getting around": "🚇", "Workplace": "💼" };
+
+    function showLocked(titles) {
+      const grid = document.getElementById("lockedGrid");
+      grid.innerHTML = "";
+      titles.forEach((title) => {
+        const item = document.createElement("div");
+        item.className = "locked-item";
+        item.textContent = `🔒 ${title}`;
+        grid.appendChild(item);
+      });
+    }
+
+    fetch("../data/quests.json")
+      .then((res) => res.json())
+      .then((quests) => {
+        const mine = quests.filter((q) => q.language === lang);
+        if (mine.length === 0) throw new Error("No quests for this language");
+
+        // First quest = starter, the rest = locked
+        const starter = mine[0];
+        const icon = ICONS[starter.category] || "⭐";
+        document.getElementById("starterTag").textContent = `${starter.category} · ${starter.difficulty}`;
+        document.getElementById("starterTitle").textContent = `${icon} ${starter.title}`;
+        document.getElementById("starterDesc").textContent = `${starter.scenario} Practise it in ${LANG_NAMES[lang]}.`;
+        document.getElementById("starterXp").textContent = `⭐ +${starter.xp} XP`;
+        document.getElementById("starterBtn").href = `quest.html?id=${starter.id}`;
+
+        showLocked(mine.slice(1, 5).map((q) => q.title));
+      })
+      .catch(() => {
+        // If quests.json can't load, still show something sensible
+        document.getElementById("starterDesc").textContent = `Practise ordering a drink naturally in ${LANG_NAMES[lang]}.`;
+        showLocked(["Talk to Ah Ma", "CNY visiting", "Order food", "Make small talk"]);
+      });
+  </script>
+</body>
+</html>

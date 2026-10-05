@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quest SG — Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- LEFT: navy brand panel -->
+    <section class="brand">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">Q</span>
+        <span class="logo-text">Quest SG</span>
+      </a>
+
+      <div class="brand-body">
+        <h1>Practise your Mother Tongue, one quest at a time.</h1>
+        <p>Order kopi, chat with Ah Ma, survive CNY visiting. Roleplay real Singapore moments with an AI buddy who never judges.</p>
+        <div class="chips">
+          <span class="chip chip-active">华语</span>
+          <span class="chip">Bahasa Melayu</span>
+          <span class="chip">தமிழ்</span>
+        </div>
+      </div>
+
+      <ul class="ticks">
+        <li>Singlish mixing welcome</li>
+        <li>Mistakes stay private</li>
+      </ul>
+    </section>
+
+    <!-- RIGHT: sign-in form -->
+    <section class="form-side">
+      <div class="form-box">
+        <h2>Welcome back</h2>
+        <p class="sub">Sign in to keep your streak going.</p>
+
+        <form id="loginForm" novalidate>
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@email.com" autocomplete="email" required>
+
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Your password" autocomplete="current-password" required>
+
+          <a href="#" class="forgot">Forgot password?</a>
+
+          <p class="form-error" id="loginError">Check your email and password and try again.</p>
+
+          <button type="submit" class="btn btn-primary" id="loginBtn">Sign in</button>
+        </form>
+
+        <div class="divider">or</div>
+
+        <button type="button" class="btn btn-outline" id="guestBtn">Continue as guest</button>
+        <p class="guest-note">Guest mode is fully anonymous. No profile, no one sees your mistakes. Just practise.</p>
+
+        <p class="switch-line">New here? <a href="register.html">Create an account</a></p>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // ---- Settings ----
+    // DEMO_MODE = true lets you sign in without a backend (for testing the pages).
+    // Change to false once your backend's /auth/login route is ready.
+    const DEMO_MODE = true;
+    const API_BASE = "http://localhost:3000";   // your backend's address
+
+    // Which language to open the quest board in (saved from the front page)
+    const lang = localStorage.getItem("Language") || "zh";
+    const homeUrl = `pages/home.html?lang=${lang}`;
+
+    // ---- Sign in ----
+    const form = document.getElementById("loginForm");
+    const errorEl = document.getElementById("loginError");
+    const loginBtn = document.getElementById("loginBtn");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();                 // stop the page from reloading
+      errorEl.style.display = "none";
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      // Simple check before sending anything
+      if (!email || !password) {
+        errorEl.textContent = "Please fill in your email and password.";
+        errorEl.style.display = "block";
+        return;
+      }
+
+      // Demo mode: skip the backend and go straight in
+      if (DEMO_MODE) {
+        localStorage.setItem("token", "demo-token");
+        localStorage.setItem("Role", "Learner");
+        localStorage.setItem("UserID", "demo-user");
+        window.location.href = homeUrl;
+        return;
+      }
+
+      loginBtn.disabled = true;
+      loginBtn.textContent = "Signing in…";
+
+      try {
+        const res = await fetch(`${API_BASE}/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.message || "Check your email and password and try again.");
+        }
+
+        // Save login details, like in our past project
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("Role", data.user.role);
+        localStorage.setItem("UserID", data.user.userId);
+
+        window.location.href = homeUrl;
+      } catch (err) {
+        errorEl.textContent = err.message || "Something went wrong. Please try again.";
+        errorEl.style.display = "block";
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Sign in";
+      }
+    });
+
+    // ---- Guest (same as the front page) ----
+    document.getElementById("guestBtn").addEventListener("click", () => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("UserID");
+      localStorage.setItem("Role", "Guest");
+      window.location.href = homeUrl;
+    });
+  </script>
+</body>
+</html>
