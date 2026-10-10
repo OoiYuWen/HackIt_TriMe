@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quest SG — Quest Board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=DM+Sans:wght@400;500;700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+Tamil:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="signinhome.css">
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <a href="../index.html" class="logo">
+      <span class="logo-mark">Q</span>
+      <span class="logo-text">Quest SG</span>
+    </a>
+
+    <div class="top-right">
+      <div class="stats" aria-label="Your progress">
+        <div class="stat stat-streak" title="Days in a row"><span aria-hidden="true">🔥</span><b id="streakNum">0</b><small>day streak</small></div>
+        <div class="stat stat-xp" title="Total XP"><span aria-hidden="true">⭐</span><b id="xpNum">0</b><small>XP</small></div>
+      </div>
+      <div class="user-chip">
+        <span class="avatar" id="avatar">G</span>
+        <span id="userName">Guest</span>
+        <button type="button" class="link-btn" id="signOutBtn">Sign out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+
+    <p class="guest-banner" id="guestBanner">
+      You're playing as a guest, so your XP and streak won't be kept if you sign out.
+      <a href="../register.html">Create a free account</a> to keep them.
+    </p>
+
+    <section class="hello">
+      <h1 id="greeting">Ready for a quest?</h1>
+      <p id="greetingSub">Pick a real Singapore moment and practise it with your AI buddy.</p>
+    </section>
+
+    <section class="level" aria-label="Level progress">
+      <div class="level-row">
+        <span>Level <span id="levelNum">1</span></span>
+        <span id="levelHint">100 XP to level 2</span>
+      </div>
+      <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+    </section>
+
+    <!-- Language tabs -->
+    <div class="tabs" role="tablist" aria-label="Choose a language">
+      <button type="button" class="tab" role="tab" data-lang="zh">华语 Mandarin</button>
+      <button type="button" class="tab" role="tab" data-lang="ms">Bahasa Melayu</button>
+      <button type="button" class="tab" role="tab" data-lang="ta">தமிழ் Tamil</button>
+    </div>
+
+    <div class="section-title">
+      <h2 id="boardTitle">Quest board</h2>
+      <span id="boardCount"></span>
+    </div>
+
+    <div class="grid" id="questGrid">
+      <p class="message">Loading quests…</p>
+    </div>
+
+    <!-- Features shown as "coming soon" for the demo -->
+    <section class="soon">
+      <h2>Coming soon</h2>
+      <div class="soon-list">
+        <span class="soon-item">👥 Anonymous learner groups</span>
+        <span class="soon-item">🎙️ Voice rooms with native speakers</span>
+        <span class="soon-item">🎵 Unlock song lyrics</span>
+        <span class="soon-item">📸 Real-world quest submissions</span>
+      </div>
+    </section>
+  </main>
+
+  <!-- Quest detail popup -->
+  <dialog id="questDialog" aria-labelledby="dlgTitle">
+    <div class="dlg-head">
+      <button type="button" class="dlg-close" id="dlgClose" aria-label="Close">✕</button>
+      <h2 id="dlgTitle"></h2>
+      <p id="dlgLocal"></p>
+    </div>
+    <div class="dlg-body">
+      <div>
+        <h4>The scene</h4>
+        <p id="dlgScenario"></p>
+      </div>
+      <div class="npc">
+        <b id="dlgNpc"></b>
+        <span id="dlgNpcRole"></span>
+        <div class="line" id="dlgOpening"></div>
+      </div>
+      <div>
+        <h4>Your goals</h4>
+        <ul class="goals" id="dlgGoals"></ul>
+      </div>
+      <div>
+        <h4>Useful words</h4>
+        <div class="vocab" id="dlgVocab"></div>
+      </div>
+      <a class="btn btn-primary" id="dlgStart" href="#">Start quest</a>
+    </div>
+  </dialog>
+
+  <script type="module">
+    import { auth, db } from "../firebase.js";
+    import { onAuthStateChanged, signInAnonymously, signOut }
+      from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+    import { collection, query, where, getDocs, doc, getDoc }
+      from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+    /* =====================================================================
+       SETTINGS
+       ===================================================================== */
+    const LANGUAGES = { zh: "Mandarin", ms: "Malay", ta: "Tamil" };
+    const XP_PER_LEVEL = 100;
+
+    /* =====================================================================
+       1. FIREBASE: read quests + this user's progress
+       ===================================================================== */
+
+    // All quests for one language, sorted by "order" (collection: quests)
+    async function loadQuests(lang) {
+      const snap = await getDocs(query(collection(db, "quests"), where("language", "==", lang)));
+      return snap.docs
+        .map((d) => ({ id: d.id, ...d.data() }))
+        .sort((a, b) => a.order - b.order);   // sorted here, so no Firestore index is needed
+    }
+
+    // This user's document (collection: users, doc id = their uid). Empty {} if new.
+    async function loadUser(uid) {
+      const snap = await getDoc(doc(db, "users", uid));
+      return snap.exists() ? snap.data() : {};
+    }
+
+    /* =====================================================================
+       2. STATE
+       ===================================================================== */
+    let isGuest = true;
+    let name = "Guest";
+    let userData = {};
+    let lang = "zh";
+
+    const $ = (id) => document.getElementById(id);
+
+    // Build an element safely (text goes in as text, never as HTML)
+    function el(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined) node.textContent = text;
+      return node;
+    }
+
+    function progress() {
+      return {
+        xp: userData.xp || 0,
+        streak: userData.streak || 0,
+        completed: userData.completedQuests || {}
+      };
+    }
+
+    /* =====================================================================
+       3. TOP BAR + LEVEL BAR
+       ===================================================================== */
+    function renderHeader() {
+      const p = progress();
+
+      $("userName").textContent = name;
+      $("avatar").textContent = name.charAt(0).toUpperCase();
+      $("guestBanner").style.display = isGuest ? "block" : "none";
+      $("signOutBtn").textContent = isGuest ? "Leave" : "Sign out";
+      $("greeting").textContent = isGuest ? "Ready for a quest?" : `Welcome back, ${name}!`;
+
+      const level = Math.floor(p.xp / XP_PER_LEVEL) + 1;
+      const into = p.xp % XP_PER_LEVEL;
+      $("streakNum").textContent = p.streak;
+      $("xpNum").textContent = p.xp;
+      $("levelNum").textContent = level;
+      $("levelHint").textContent = `${XP_PER_LEVEL - into} XP to level ${level + 1}`;
+      $("barFill").style.width = `${(into / XP_PER_LEVEL) * 100}%`;
+    }
+
+    /* =====================================================================
+       4. QUEST CARDS
+       ===================================================================== */
+    function renderQuests(quests) {
+      const completed = progress().completed;
+      const grid = $("questGrid");
+      grid.replaceChildren();
+
+      $("boardTitle").textContent = `${LANGUAGES[lang]} quests`;
+
+      if (quests.length === 0) {
+        grid.append(el("p", "message", "No quests for this language yet. If you expected some, make sure you've seeded the quests into Firestore."));
+        $("boardCount").textContent = "";
+        return;
+      }
+
+      const doneCount = quests.filter((q) => completed[q.id]).length;
+      $("boardCount").textContent = `${doneCount} of ${quests.length} done`;
+
+      // The first quest not finished yet gets the "Up next" highlight
+      const nextQuest = quests.find((q) => !completed[q.id]);
+
+      quests.forEach((q) => {
+        const done = !!completed[q.id];
+        const isNext = nextQuest && nextQuest.id === q.id;
+
+        const card = el("button", "card" + (done ? " done" : isNext ? " next" : ""));
+        card.type = "button";
+
+        if (done) card.append(el("span", "tag tag-done", "✓ Completed"));
+        else if (isNext) card.append(el("span", "tag tag-next", "Up next"));
+
+        card.append(el("h3", "", q.title));
+        card.append(el("p", "local", q.titleLocal));
+        card.append(el("p", "scenario", q.scenario));
+
+        const meta = el("div", "meta");
+        const dots = el("div", "dots");
+        for (let i = 1; i <= 3; i++) dots.append(el("i", i <= q.difficulty ? "on" : ""));
+        dots.append(el("span", "", ["", "Easy", "Medium", "Hard"][q.difficulty] || ""));
+        meta.append(dots, el("span", "xp", `+${q.xpReward} XP`));
+        card.append(meta);
+
+        card.addEventListener("click", () => openQuest(q));
+        grid.append(card);
+      });
+    }
+
+    function showError(err) {
+      console.error(err);
+      const box = el("div", "message error");
+      let hint = "Check that firebase.js has your config pasted in and the quests are seeded in Firestore.";
+      if (err && err.code === "permission-denied") {
+        hint = "Firestore blocked the read. Check your security rules (quests must be readable when signed in).";
+      } else if (err && err.code === "auth/operation-not-allowed") {
+        hint = "Turn on Anonymous sign-in in Firebase > Authentication > Sign-in method.";
+      }
+      box.append(
+        el("b", "", "Couldn't load from Firebase. "),
+        document.createTextNode(hint + " "),
+        el("code", "", (err && (err.code || err.message)) || "unknown error")
+      );
+      $("questGrid").replaceChildren(box);
+    }
+
+    /* =====================================================================
+       5. QUEST DETAIL POPUP
+       ===================================================================== */
+    const dialog = $("questDialog");
+
+    function openQuest(q) {
+      $("dlgTitle").textContent = q.title;
+      $("dlgLocal").textContent = q.titleLocal;
+      $("dlgScenario").textContent = q.scenario;
+      $("dlgNpc").textContent = q.npcName;
+      $("dlgNpcRole").textContent = q.npcRole;
+      $("dlgOpening").textContent = "“" + q.openingLine + "”";
+
+      $("dlgGoals").replaceChildren(...(q.goals || []).map((g) => el("li", "", g)));
+
+      $("dlgVocab").replaceChildren(
+        ...(q.vocab || []).map((v) => {
+          const box = el("div");
+          box.append(el("strong", "", v.word));
+          if (v.romanisation) box.append(el("em", "", v.romanisation));
+          box.append(el("em", "", v.meaning));
+          return box;
+        })
+      );
+
+      // The roleplay page comes next
+      $("dlgStart").href = `quest.html?id=${encodeURIComponent(q.id)}`;
+      dialog.showModal();
+    }
+
+    $("dlgClose").addEventListener("click", () => dialog.close());
+    // Click on the dark backdrop closes it too
+    dialog.addEventListener("click", (e) => { if (e.target === dialog) dialog.close(); });
+
+    /* =====================================================================
+       6. LANGUAGE TABS
+       ===================================================================== */
+    function markTab() {
+      document.querySelectorAll(".tab").forEach((t) => {
+        t.setAttribute("aria-selected", String(t.dataset.lang === lang));
+      });
+    }
+
+    document.querySelectorAll(".tab").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        lang = tab.dataset.lang;
+        localStorage.setItem("Language", lang);
+        history.replaceState(null, "", `?lang=${lang}`);   // keep the address in sync
+        markTab();
+        showBoard();
+      });
+    });
+
+    /* =====================================================================
+       7. SIGN OUT / LEAVE
+       ===================================================================== */
+    $("signOutBtn").addEventListener("click", async () => {
+      try { await signOut(auth); } catch (e) { console.error(e); }
+      ["token", "UserID", "Role", "Name"].forEach((k) => localStorage.removeItem(k));
+      window.location.href = "../index.html";
+    });
+
+    /* =====================================================================
+       8. GO!
+       ===================================================================== */
+    async function showBoard() {
+      try {
+        renderQuests(await loadQuests(lang));
+      } catch (err) {
+        showError(err);
+      }
+    }
+
+    // Wait for Firebase to tell us who is signed in
+    let started = false;
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        // Nobody signed in: treat them as a guest so the board still works
+        try { await signInAnonymously(auth); } catch (err) { showError(err); }
+        return;                      // this callback runs again once signed in
+      }
+      if (started) return;
+      started = true;
+
+      isGuest = user.isAnonymous;
+      try { userData = await loadUser(user.uid); } catch (err) { console.error(err); }
+
+      name = isGuest ? "Guest" : (userData.name || user.displayName || "Learner");
+
+      // Language: ?lang= in the address, else the saved one, else their profile, else Mandarin
+      const wanted = new URLSearchParams(location.search).get("lang")
+        || localStorage.getItem("Language")
+        || userData.language;
+      lang = LANGUAGES[wanted] ? wanted : "zh";
+
+      markTab();
+      renderHeader();
+      showBoard();
+    });
+  </script>
+</body>
+</html>
