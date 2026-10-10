@@ -1,109 +1,147 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quest SG — Quest Board</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=DM+Sans:wght@400;500;700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+Tamil:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="signinhome.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+Tamil:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="homepage.css">
 </head>
-<body>
+<body class="min-h-full flex flex-col bg-[#FFF8EE] text-[#1F2A44] font-sans selection:bg-[#FFC93C]/40">
 
   <!-- TOP BAR -->
-  <header class="topbar">
-    <a href="../index.html" class="logo">
-      <span class="logo-mark">Q</span>
-      <span class="logo-text">Quest SG</span>
-    </a>
+  <header class="topbar sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-[#DCCFB8] px-4 sm:px-8 py-3.5 shadow-sm">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      <a href="../index.html" class="logo group flex items-center gap-3 no-underline text-[#1F2A44]">
+        <span class="logo-mark w-11 h-11 rounded-xl bg-[#F28C28] text-[#1F2A44] flex items-center justify-center font-display font-bold text-xl shadow-md group-hover:scale-105 transition-transform">Q</span>
+        <span class="logo-text font-display font-bold text-2xl">Quest SG</span>
+      </a>
 
-    <div class="top-right">
-      <div class="stats" aria-label="Your progress">
-        <div class="stat stat-streak" title="Days in a row"><span aria-hidden="true">🔥</span><b id="streakNum">0</b><small>day streak</small></div>
-        <div class="stat stat-xp" title="Total XP"><span aria-hidden="true">⭐</span><b id="xpNum">0</b><small>XP</small></div>
-      </div>
-      <div class="user-chip">
-        <span class="avatar" id="avatar">G</span>
-        <span id="userName">Guest</span>
-        <button type="button" class="link-btn" id="signOutBtn">Sign out</button>
+      <div class="top-right flex items-center gap-3 sm:gap-6">
+        <div class="stats flex items-center gap-3 bg-[#FFF8EE] border border-[#DCCFB8] px-3.5 py-1.5 rounded-2xl shadow-inner" aria-label="Your progress">
+          <div class="stat stat-streak flex items-center gap-1.5 text-amber-700 font-bold text-sm" title="Days in a row">
+            <span aria-hidden="true" class="text-base">🔥</span>
+            <b id="streakNum" class="font-display text-lg">0</b>
+            <small class="text-xs font-medium text-slate-500 hidden sm:inline">day streak</small>
+          </div>
+          <div class="h-4 w-px bg-[#DCCFB8]"></div>
+          <div class="stat stat-xp flex items-center gap-1.5 text-[#C2610F] font-bold text-sm" title="Total XP">
+            <span aria-hidden="true" class="text-base">⭐</span>
+            <b id="xpNum" class="font-display text-lg">0</b>
+            <small class="text-xs font-medium text-slate-500 hidden sm:inline">XP</small>
+          </div>
+        </div>
+
+        <div class="user-chip flex items-center gap-2.5 bg-[#FFF8EE] border border-[#DCCFB8] px-3.5 py-1.5 rounded-2xl">
+          <span class="avatar w-8 h-8 rounded-full bg-[#2BA58A] text-white flex items-center justify-center font-display font-bold text-sm shadow-sm" id="avatar">G</span>
+          <span id="userName" class="font-bold text-sm text-[#1F2A44] hidden md:inline">Guest</span>
+          <button type="button" class="link-btn text-xs font-semibold text-[#5A6378] hover:text-[#1F2A44] underline cursor-pointer bg-transparent border-0 p-0 ml-1" id="signOutBtn">Sign out</button>
+        </div>
       </div>
     </div>
   </header>
 
-  <main class="page">
+  <main class="page max-w-7xl w-0-plus mx-auto px-4 sm:px-8 py-8 lg:py-10 space-y-8 flex-1">
 
-    <p class="guest-banner" id="guestBanner">
+    <p class="guest-banner bg-[#E3F4EF] border border-[#2BA58A]/30 p-4 rounded-2xl text-[#17664F] text-sm leading-relaxed shadow-sm" id="guestBanner" style="display:none;">
       You're playing as a guest, so your XP and streak won't be kept if you sign out.
-      <a href="../register.html">Create a free account</a> to keep them.
+      <a href="../register.html" class="underline font-bold text-[#17664F] hover:text-[#2BA58A]">Create a free account</a> to keep them.
     </p>
 
-    <section class="hello">
-      <h1 id="greeting">Ready for a quest?</h1>
-      <p id="greetingSub">Pick a real Singapore moment and practise it with your AI buddy.</p>
-    </section>
+    <!-- Greeting & Level Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div class="lg:col-span-8 space-y-6">
+        <section class="hello space-y-2">
+          <h1 id="greeting" class="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-[#1F2A44] tracking-tight">Ready for a quest?</h1>
+          <p id="greetingSub" class="text-base sm:text-lg text-[#5A6378] max-w-2xl leading-relaxed">Pick a real Singapore moment and practise it with your AI buddy.</p>
+        </section>
 
-    <section class="level" aria-label="Level progress">
-      <div class="level-row">
-        <span>Level <span id="levelNum">1</span></span>
-        <span id="levelHint">100 XP to level 2</span>
+        <section class="level bg-white border-2 border-[#DCCFB8] p-6 rounded-3xl chunky-card space-y-3 shadow-sm" aria-label="Level progress">
+          <div class="level-row flex items-baseline justify-between">
+            <span class="font-display font-bold text-xl text-[#1F2A44]">Level <span id="levelNum" class="text-[#F28C28]">1</span> Explorer</span>
+            <span id="levelHint" class="text-xs font-bold text-[#5A6378]">100 XP to level 2</span>
+          </div>
+          <div class="bar h-3.5 bg-[#FFF8EE] rounded-full overflow-hidden p-0.5 border border-[#DCCFB8]">
+            <div class="bar-fill h-full rounded-full bg-gradient-to-r from-[#2BA58A] to-[#FFC93C] transition-all duration-700" id="barFill" style="width: 0%"></div>
+          </div>
+        </section>
       </div>
-      <div class="bar"><div class="bar-fill" id="barFill"></div></div>
-    </section>
+
+      <!-- Side Widget Card -->
+      <div class="lg:col-span-4 bg-gradient-to-br from-[#1F2A44] to-[#0F1626] text-[#FFF8EE] p-6 rounded-3xl shadow-xl space-y-4 relative overflow-hidden">
+        <div class="absolute -right-4 -bottom-4 text-7xl opacity-10 font-display">🇸🇬</div>
+        <h3 class="font-display font-bold text-lg text-[#FFC93C]">🌟 Singapore Cultural Perks</h3>
+        <p class="text-xs text-[#B9C0D0] leading-relaxed">Master authentic hawker ordering, Singlish colloquialisms, and local greetings with instant AI feedback.</p>
+        <span class="inline-block text-[11px] bg-white/10 border border-white/20 text-[#FFC93C] px-3 py-1 rounded-full font-semibold">
+          ✨ Interactive Voice Ready
+        </span>
+      </div>
+    </div>
 
     <!-- Language tabs -->
-    <div class="tabs" role="tablist" aria-label="Choose a language">
-      <button type="button" class="tab" role="tab" data-lang="zh">华语 Mandarin</button>
-      <button type="button" class="tab" role="tab" data-lang="ms">Bahasa Melayu</button>
-      <button type="button" class="tab" role="tab" data-lang="ta">தமிழ் Tamil</button>
+    <div class="space-y-4 pt-2">
+      <div class="section-title flex items-center justify-between">
+        <h2 id="boardTitle" class="font-display font-extrabold text-2xl text-[#1F2A44]">Quest board</h2>
+        <span id="boardCount" class="text-xs font-bold text-[#5A6378] bg-white border border-[#DCCFB8] px-3 py-1.5 rounded-xl shadow-xs"></span>
+      </div>
+
+      <div class="tabs flex flex-wrap gap-2.5" role="tablist" aria-label="Choose a language">
+        <button type="button" class="tab chunky-btn px-5 py-2.5 rounded-2xl font-bold text-sm border-2 transition-all cursor-pointer bg-white text-[#1F2A44] border-[#DCCFB8] hover:border-[#F28C28]" role="tab" data-lang="zh">🇨🇳 华语 Mandarin</button>
+        <button type="button" class="tab chunky-btn px-5 py-2.5 rounded-2xl font-bold text-sm border-2 transition-all cursor-pointer bg-white text-[#1F2A44] border-[#DCCFB8] hover:border-[#F28C28]" role="tab" data-lang="ms">🇲🇾 Bahasa Melayu</button>
+        <button type="button" class="tab chunky-btn px-5 py-2.5 rounded-2xl font-bold text-sm border-2 transition-all cursor-pointer bg-white text-[#1F2A44] border-[#DCCFB8] hover:border-[#F28C28]" role="tab" data-lang="ta">🇸🇬 தமிழ் Tamil</button>
+      </div>
     </div>
 
-    <div class="section-title">
-      <h2 id="boardTitle">Quest board</h2>
-      <span id="boardCount"></span>
-    </div>
-
-    <div class="grid" id="questGrid">
-      <p class="message">Loading quests…</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="questGrid">
+      <p class="message col-span-full p-8 text-center text-[#5A6378] bg-white border-2 border-dashed border-[#DCCFB8] rounded-3xl">Loading quests…</p>
     </div>
 
     <!-- Features shown as "coming soon" for the demo -->
-    <section class="soon">
-      <h2>Coming soon</h2>
-      <div class="soon-list">
-        <span class="soon-item">👥 Anonymous learner groups</span>
-        <span class="soon-item">🎙️ Voice rooms with native speakers</span>
-        <span class="soon-item">🎵 Unlock song lyrics</span>
-        <span class="soon-item">📸 Real-world quest submissions</span>
+    <section class="soon pt-6 border-t border-[#DCCFB8]/60 space-y-4">
+      <h2 class="font-display font-bold text-xl text-[#1F2A44]">Coming soon</h2>
+      <div class="soon-list flex flex-wrap gap-2.5">
+        <span class="soon-item px-4 py-2 rounded-2xl border border-dashed border-[#DCCFB8] bg-white text-[#5A6378] text-xs font-semibold shadow-xs">👥 Anonymous learner groups</span>
+        <span class="soon-item px-4 py-2 rounded-2xl border border-dashed border-[#DCCFB8] bg-white text-[#5A6378] text-xs font-semibold shadow-xs">🎙️ Voice rooms with native speakers</span>
+        <span class="soon-item px-4 py-2 rounded-2xl border border-dashed border-[#DCCFB8] bg-white text-[#5A6378] text-xs font-semibold shadow-xs">🎵 Unlock song lyrics</span>
+        <span class="soon-item px-4 py-2 rounded-2xl border border-dashed border-[#DCCFB8] bg-white text-[#5A6378] text-xs font-semibold shadow-xs">📸 Real-world quest submissions</span>
       </div>
     </section>
   </main>
 
   <!-- Quest detail popup -->
-  <dialog id="questDialog" aria-labelledby="dlgTitle">
-    <div class="dlg-head">
-      <button type="button" class="dlg-close" id="dlgClose" aria-label="Close">✕</button>
-      <h2 id="dlgTitle"></h2>
-      <p id="dlgLocal"></p>
+  <dialog id="questDialog" aria-labelledby="dlgTitle" class="w-full max-w-xl p-0 rounded-3xl border-2 border-[#DCCFB8] bg-[#FFF8EE] shadow-2xl m-auto overflow-hidden">
+    <div class="dlg-head bg-[#1F2A44] text-[#FFF8EE] p-6 relative">
+      <button type="button" class="dlg-close absolute top-5 right-5 w-9 h-9 border-0 rounded-full bg-[#2C3858] text-[#FFF8EE] font-bold text-base cursor-pointer hover:bg-slate-700 transition-colors flex items-center justify-center shadow" id="dlgClose" aria-label="Close">✕</button>
+      <h2 id="dlgTitle" class="font-display font-extrabold text-2xl sm:text-3xl pr-8 text-white"></h2>
+      <p id="dlgLocal" class="text-[#FFC93C] font-medium text-lg mt-1"></p>
     </div>
-    <div class="dlg-body">
-      <div>
-        <h4>The scene</h4>
-        <p id="dlgScenario"></p>
+    <div class="dlg-body p-6 sm:p-8 flex flex-col gap-6 max-h-[70vh] overflow-y-auto">
+      <div class="space-y-2">
+        <h4 class="font-display font-bold text-xs uppercase tracking-wider text-[#5A6378]">The scene</h4>
+        <p id="dlgScenario" class="text-[#1F2A44] text-sm sm:text-base leading-relaxed bg-white p-4 rounded-2xl border border-[#DCCFB8] shadow-xs"></p>
       </div>
-      <div class="npc">
-        <b id="dlgNpc"></b>
-        <span id="dlgNpcRole"></span>
-        <div class="line" id="dlgOpening"></div>
+      <div class="npc bg-amber-50 border-2 border-amber-200/80 p-5 rounded-2xl space-y-2 shadow-xs">
+        <div class="flex items-center justify-between text-xs font-bold text-amber-800">
+          <b id="dlgNpc" class="text-sm"></b>
+          <span id="dlgNpcRole" class="bg-amber-200/60 px-2.5 py-0.5 rounded-lg"></span>
+        </div>
+        <div class="line font-display font-bold text-xl text-[#1F2A44] italic" id="dlgOpening"></div>
       </div>
-      <div>
-        <h4>Your goals</h4>
-        <ul class="goals" id="dlgGoals"></ul>
+      <div class="space-y-2">
+        <h4 class="font-display font-bold text-xs uppercase tracking-wider text-[#5A6378]">Your goals</h4>
+        <ul class="goals space-y-2" id="dlgGoals"></ul>
       </div>
-      <div>
-        <h4>Useful words</h4>
-        <div class="vocab" id="dlgVocab"></div>
+      <div class="space-y-2">
+        <h4 class="font-display font-bold text-xs uppercase tracking-wider text-[#5A6378]">Useful words</h4>
+        <div class="vocab grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="dlgVocab"></div>
       </div>
-      <a class="btn btn-primary" id="dlgStart" href="#">Start quest</a>
+      <div class="pt-4 border-t border-[#DCCFB8] flex items-center justify-end gap-3">
+        <button type="button" onclick="document.getElementById('questDialog').close()" class="px-5 py-3 rounded-2xl font-bold text-sm text-[#5A6378] hover:bg-[#DCCFB8]/30 transition-colors cursor-pointer bg-transparent border-0">Back to Board</button>
+        <a class="btn btn-primary chunky-btn bg-[#F28C28] hover:bg-[#C2610F] text-[#1F2A44] font-display font-bold px-8 py-3.5 rounded-2xl text-base shadow-md inline-flex items-center gap-2 no-underline cursor-pointer" id="dlgStart" href="#">Start quest</a>
+      </div>
     </div>
   </dialog>
 
@@ -115,14 +153,14 @@
       from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
     /* =====================================================================
-       SETTINGS
-       ===================================================================== */
+        SETTINGS
+        ===================================================================== */
     const LANGUAGES = { zh: "Mandarin", ms: "Malay", ta: "Tamil" };
     const XP_PER_LEVEL = 100;
 
     /* =====================================================================
-       1. FIREBASE: read quests + this user's progress
-       ===================================================================== */
+        1. FIREBASE: read quests + this user's progress
+        ===================================================================== */
 
     // All quests for one language, sorted by "order" (collection: quests)
     async function loadQuests(lang) {
@@ -139,8 +177,8 @@
     }
 
     /* =====================================================================
-       2. STATE
-       ===================================================================== */
+        2. STATE
+        ===================================================================== */
     let isGuest = true;
     let name = "Guest";
     let userData = {};
@@ -165,8 +203,8 @@
     }
 
     /* =====================================================================
-       3. TOP BAR + LEVEL BAR
-       ===================================================================== */
+        3. TOP BAR + LEVEL BAR
+        ===================================================================== */
     function renderHeader() {
       const p = progress();
 
@@ -186,8 +224,8 @@
     }
 
     /* =====================================================================
-       4. QUEST CARDS
-       ===================================================================== */
+        4. QUEST CARDS
+        ===================================================================== */
     function renderQuests(quests) {
       const completed = progress().completed;
       const grid = $("questGrid");
@@ -196,7 +234,7 @@
       $("boardTitle").textContent = `${LANGUAGES[lang]} quests`;
 
       if (quests.length === 0) {
-        grid.append(el("p", "message", "No quests for this language yet. If you expected some, make sure you've seeded the quests into Firestore."));
+        grid.append(el("p", "message col-span-full p-8 text-center text-[#5A6378] bg-white border-2 border-dashed border-[#DCCFB8] rounded-3xl", "No quests for this language yet. If you expected some, make sure you've seeded the quests into Firestore."));
         $("boardCount").textContent = "";
         return;
       }
@@ -211,21 +249,36 @@
         const done = !!completed[q.id];
         const isNext = nextQuest && nextQuest.id === q.id;
 
-        const card = el("button", "card" + (done ? " done" : isNext ? " next" : ""));
+        const card = el("button", "card chunky-card flex flex-col justify-between gap-4 p-6 text-left font-sans text-[#1F2A44] bg-white border-2 border-[#DCCFB8] rounded-3xl shadow-xs cursor-pointer transition-all " + (done ? " bg-teal-50/50 border-[#2BA58A]/40" : isNext ? " border-amber-400 ring-2 ring-amber-400/20" : " hover:border-[#F28C28]"));
         card.type = "button";
 
-        if (done) card.append(el("span", "tag tag-done", "✓ Completed"));
-        else if (isNext) card.append(el("span", "tag tag-next", "Up next"));
+        const topRow = el("div", "flex items-center justify-between w-full");
+        if (done) topRow.append(el("span", "tag tag-done inline-block px-3 py-1 rounded-full text-xs font-bold bg-[#2BA58A] text-white", "✓ Completed"));
+        else if (isNext) topRow.append(el("span", "tag tag-next inline-block px-3 py-1 rounded-full text-xs font-bold bg-[#FFC93C] text-[#1F2A44]", "Up next"));
+        else topRow.append(el("span", "tag inline-block px-3 py-1 rounded-full text-xs font-bold bg-[#FFF8EE] text-[#5A6378] border border-[#DCCFB8]", `Quest #${q.order || 1}`));
 
-        card.append(el("h3", "", q.title));
-        card.append(el("p", "local", q.titleLocal));
-        card.append(el("p", "scenario", q.scenario));
+        const xpSpan = el("span", "xp font-bold text-xs text-[#C2610F] bg-amber-50 px-2.5 py-1 rounded-lg", `+${q.xpReward} XP`);
+        topRow.append(xpSpan);
+        card.append(topRow);
 
-        const meta = el("div", "meta");
-        const dots = el("div", "dots");
-        for (let i = 1; i <= 3; i++) dots.append(el("i", i <= q.difficulty ? "on" : ""));
-        dots.append(el("span", "", ["", "Easy", "Medium", "Hard"][q.difficulty] || ""));
-        meta.append(dots, el("span", "xp", `+${q.xpReward} XP`));
+        const contentBox = el("div", "space-y-1.5");
+        const h3 = el("h3", "font-display font-bold text-xl text-[#1F2A44] m-0", q.title);
+        const local = el("p", "local m-0 font-medium text-sm text-[#C2610F]", q.titleLocal);
+        const scenario = el("p", "scenario m-0 text-xs text-[#5A6378] line-clamp-2", q.scenario);
+        contentBox.append(h3, local, scenario);
+        card.append(contentBox);
+
+        const meta = el("div", "meta pt-3 border-t border-[#DCCFB8]/70 flex items-center justify-between w-full text-xs font-semibold text-[#5A6378]");
+        const dots = el("div", "dots inline-flex items-center gap-1");
+        for (let i = 1; i <= 3; i++) dots.append(el("i", i <= q.difficulty ? "on w-2.5 h-2.5 rounded-full bg-[#F28C28] inline-block" : "w-2.5 h-2.5 rounded-full bg-[#E7DDC8] inline-block"));
+        const diffText = el("span", "ml-1.5 font-medium text-[#5A6378]", ["", "Easy", "Medium", "Hard"][q.difficulty] || "");
+        dots.append(diffText);
+        meta.append(dots);
+
+        const npcNameWrap = el("span", "flex items-center gap-1.5 text-[#1F2A44] font-bold");
+        npcNameWrap.append(el("span", "w-6 h-6 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-[10px]", "NPC"), document.createTextNode(q.npcName || "Partner"));
+        meta.append(npcNameWrap);
+
         card.append(meta);
 
         card.addEventListener("click", () => openQuest(q));
@@ -235,7 +288,7 @@
 
     function showError(err) {
       console.error(err);
-      const box = el("div", "message error");
+      const box = el("div", "message error col-span-full p-6 rounded-2xl bg-red-50 border-2 border-red-200 text-red-700 leading-relaxed");
       let hint = "Check that firebase.js has your config pasted in and the quests are seeded in Firestore.";
       if (err && err.code === "permission-denied") {
         hint = "Firestore blocked the read. Check your security rules (quests must be readable when signed in).";
@@ -245,14 +298,14 @@
       box.append(
         el("b", "", "Couldn't load from Firebase. "),
         document.createTextNode(hint + " "),
-        el("code", "", (err && (err.code || err.message)) || "unknown error")
+        el("code", "bg-black/5 px-1.5 py-0.5 rounded font-mono text-xs", (err && (err.code || err.message)) || "unknown error")
       );
       $("questGrid").replaceChildren(box);
     }
 
     /* =====================================================================
-       5. QUEST DETAIL POPUP
-       ===================================================================== */
+        5. QUEST DETAIL POPUP
+        ===================================================================== */
     const dialog = $("questDialog");
 
     function openQuest(q) {
@@ -263,14 +316,18 @@
       $("dlgNpcRole").textContent = q.npcRole;
       $("dlgOpening").textContent = "“" + q.openingLine + "”";
 
-      $("dlgGoals").replaceChildren(...(q.goals || []).map((g) => el("li", "", g)));
+      $("dlgGoals").replaceChildren(...(q.goals || []).map((g) => {
+        const li = el("li", "flex items-start gap-2.5 text-sm font-medium text-[#1F2A44] bg-white p-3 rounded-2xl border border-[#DCCFB8] shadow-xs");
+        li.innerHTML = `<span class="text-[#2BA58A] font-bold mt-0.5">✓</span> <span>${g}</span>`;
+        return li;
+      }));
 
       $("dlgVocab").replaceChildren(
         ...(q.vocab || []).map((v) => {
-          const box = el("div");
-          box.append(el("strong", "", v.word));
-          if (v.romanisation) box.append(el("em", "", v.romanisation));
-          box.append(el("em", "", v.meaning));
+          const box = el("div", "bg-white p-3.5 rounded-2xl border border-[#DCCFB8] shadow-xs");
+          box.append(el("strong", "font-display font-bold text-[#1F2A44] text-sm block", v.word));
+          if (v.romanisation) box.append(el("em", "not-italic text-xs text-[#5A6378] block mt-0.5", v.romanisation));
+          box.append(el("em", "not-italic text-xs font-semibold text-[#C2610F] block mt-1", v.meaning));
           return box;
         })
       );
@@ -285,11 +342,17 @@
     dialog.addEventListener("click", (e) => { if (e.target === dialog) dialog.close(); });
 
     /* =====================================================================
-       6. LANGUAGE TABS
-       ===================================================================== */
+        6. LANGUAGE TABS
+        ===================================================================== */
     function markTab() {
       document.querySelectorAll(".tab").forEach((t) => {
-        t.setAttribute("aria-selected", String(t.dataset.lang === lang));
+        const selected = t.dataset.lang === lang;
+        t.setAttribute("aria-selected", String(selected));
+        if (selected) {
+          t.className = "tab chunky-btn px-5 py-2.5 rounded-2xl font-bold text-sm border-2 transition-all cursor-pointer bg-[#F28C28] text-[#1F2A44] border-[#F28C28] shadow-sm";
+        } else {
+          t.className = "tab chunky-btn px-5 py-2.5 rounded-2xl font-bold text-sm border-2 transition-all cursor-pointer bg-white text-[#1F2A44] border-[#DCCFB8] hover:border-[#F28C28]";
+        }
       });
     }
 
@@ -297,15 +360,15 @@
       tab.addEventListener("click", () => {
         lang = tab.dataset.lang;
         localStorage.setItem("Language", lang);
-        history.replaceState(null, "", `?lang=${lang}`);   // keep the address in sync
+        history.replaceState(null, "", `?lang=${lang}`);    // keep the address in sync
         markTab();
         showBoard();
       });
     });
 
     /* =====================================================================
-       7. SIGN OUT / LEAVE
-       ===================================================================== */
+        7. SIGN OUT / LEAVE
+        ===================================================================== */
     $("signOutBtn").addEventListener("click", async () => {
       try { await signOut(auth); } catch (e) { console.error(e); }
       ["token", "UserID", "Role", "Name"].forEach((k) => localStorage.removeItem(k));
@@ -313,8 +376,8 @@
     });
 
     /* =====================================================================
-       8. GO!
-       ===================================================================== */
+        8. GO!
+        ===================================================================== */
     async function showBoard() {
       try {
         renderQuests(await loadQuests(lang));
@@ -329,7 +392,7 @@
       if (!user) {
         // Nobody signed in: treat them as a guest so the board still works
         try { await signInAnonymously(auth); } catch (err) { showError(err); }
-        return;                      // this callback runs again once signed in
+        return;                    // this callback runs again once signed in
       }
       if (started) return;
       started = true;

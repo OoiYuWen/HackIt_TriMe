@@ -1,490 +1,928 @@
-/* ---------- Colours (same palette as the other pages) ---------- */
+
+/* ==========================================
+   QUEST SG — HOMEPAGE STYLES
+   Works with the existing homepage.html
+   ========================================== */
+
 :root {
-  --mango: #F28C28;
-  --mango-dark: #C2610F;
-  --yellow: #FFC93C;
-  --teal: #2BA58A;
-  --teal-dark: #17664F;
-  --teal-light: #E3F4EF;
-  --navy: #1F2A44;
-  --navy-dark: #0F1626;
-  --cream: #FFF8EE;
-  --sand: #DCCFB8;
-  --muted: #5A6378;
-  --error: #B42318;
+  --cream: #fffaf1;
+  --navy: #202d42;
+  --navy-dark: #131d2d;
+  --orange: #f28c45;
+  --orange-dark: #c2610f;
+  --yellow: #ffd66b;
+  --teal: #2ba58a;
+  --teal-light: #e3f4ef;
+  --ink: #263449;
+  --muted: #737d8b;
+  --sand: #e8dfd0;
+  --white: #ffffff;
+  --shadow: 0 8px 30px rgba(32, 45, 66, .06);
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   margin: 0;
-  background: var(--cream);
-  color: var(--navy);
-  font-family: "DM Sans", "PingFang SC", "Noto Sans SC", "Noto Sans Tamil", sans-serif;
+  background: var(--cream) !important;
+  color: var(--ink);
+  font-family: "DM Sans", "Noto Sans SC",
+    "Noto Sans Tamil", sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, .logo-text {
-  font-family: "Bricolage Grotesque", "Noto Sans SC", "Noto Sans Tamil", sans-serif;
-  font-weight: 700;
+h1, h2, h3, h4,
+.logo-text,
+.logo-mark,
+.font-display {
+  font-family: "Bricolage Grotesque",
+    "Noto Sans SC", "Noto Sans Tamil", sans-serif;
 }
 
-/* ---------- Top bar ---------- */
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font-family: inherit;
+}
+
+a {
+  text-underline-offset: 3px;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 4px;
+}
+
+/* NAVIGATION */
+
 .topbar {
-  background: var(--navy);
-  color: var(--cream);
-  padding: 14px 32px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(255, 250, 241, .94) !important;
+  border-bottom: 1px solid var(--sand) !important;
+  box-shadow: 0 2px 12px rgba(32, 45, 66, .025) !important;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 .logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: var(--cream);
   text-decoration: none;
 }
 
 .logo-mark {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: var(--mango);
-  color: var(--navy);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-weight: 700;
-  font-size: 20px;
+  background: var(--orange) !important;
+  box-shadow: none !important;
+  border-radius: 13px !important;
+  transition: transform .2s ease;
 }
 
-.logo-text { font-size: 22px; }
+.logo:hover .logo-mark {
+  transform: rotate(-6deg) scale(1.06);
+}
 
-.top-right {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px 20px;
+.logo-text {
+  color: var(--navy) !important;
+  letter-spacing: -1px;
 }
 
 .stats {
-  display: flex;
-  gap: 10px;
+  background: #fff !important;
+  border-color: var(--sand) !important;
+  box-shadow: none !important;
 }
 
 .stat {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: #2C3858;
-  font-weight: 700;
-  font-size: 15px;
+  white-space: nowrap;
 }
 
-.stat small {
-  font-weight: 500;
-  color: #B9C0D0;
+.stat-streak {
+  color: #bc672d !important;
 }
 
-.stat-streak b { color: var(--yellow); }
-.stat-xp b     { color: var(--mango); }
+.stat-xp {
+  color: #a96b19 !important;
+}
 
 .user-chip {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 15px;
+  background: #fff !important;
+  border-color: var(--sand) !important;
 }
 
 .avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--teal);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
+  background: #dcefe5 !important;
+  color: #24694f !important;
 }
 
 .link-btn {
-  background: none;
-  border: none;
-  padding: 0;
-  font: inherit;
-  font-size: 14px;
-  color: #B9C0D0;
-  text-decoration: underline;
-  cursor: pointer;
+  transition: color .2s ease;
 }
 
-.link-btn:hover { color: var(--cream); }
+/* PAGE LAYOUT */
 
-/* ---------- Page body ---------- */
 .page {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 36px 24px 64px;
+  width: min(100% - 48px, 1160px);
+  max-width: 1160px;
+  margin-inline: auto;
+  padding-top: 38px;
+  padding-bottom: 72px;
 }
+
+.page > .grid {
+  align-items: stretch;
+}
+
+/* GUEST NOTICE */
 
 .guest-banner {
-  display: none;               /* shown by the script for guests */
-  margin: 0 0 24px;
-  padding: 14px 18px;
-  border-radius: 12px;
-  background: var(--teal-light);
-  color: var(--teal-dark);
-  font-size: 15px;
-  line-height: 1.5;
+  margin: 0 0 30px;
+  background: var(--teal-light) !important;
+  border: 1px solid #c4e5d5 !important;
+  border-radius: 15px !important;
+  box-shadow: none !important;
+  color: #245f4b !important;
+  line-height: 1.75;
 }
 
-.guest-banner a { color: var(--teal-dark); font-weight: 700; }
+.guest-banner a {
+  color: #17664f !important;
+  font-weight: 700;
+}
+
+/* WELCOME AREA */
+
+.hello {
+  position: relative;
+  padding: 12px 0 4px;
+}
 
 .hello h1 {
-  margin: 0 0 6px;
-  font-size: clamp(30px, 4vw, 42px);
-  line-height: 1.1;
+  max-width: 700px;
+  margin: 0;
+  color: var(--navy) !important;
+  font-size: clamp(36px, 4.5vw, 53px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -2px;
+  text-wrap: balance;
 }
 
 .hello p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 17px;
+  max-width: 590px;
+  color: var(--muted) !important;
+  font-size: 16px;
+  line-height: 1.8;
 }
 
-/* Level bar */
+/* LEVEL PROGRESS */
+
 .level {
-  margin: 24px 0 8px;
-  padding: 18px 20px;
-  background: #fff;
-  border: 2px solid var(--sand);
-  border-radius: 16px;
-  box-shadow: 0 4px 0 var(--sand);
+  background: var(--navy) !important;
+  color: #fff !important;
+  border: 0 !important;
+  border-radius: 21px !important;
+  padding: 23px 25px !important;
+  box-shadow: 0 5px 0 var(--navy-dark) !important;
 }
 
-.level-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 10px;
-  font-weight: 700;
+.level .level-row span:first-child {
+  color: #fff !important;
 }
 
-.level-row span:last-child {
-  font-weight: 500;
-  font-size: 14px;
-  color: var(--muted);
+.level #levelNum {
+  color: var(--yellow) !important;
 }
 
-.bar {
-  height: 12px;
-  border-radius: 999px;
-  background: #F1E8D6;
-  overflow: hidden;
+.level #levelHint {
+  color: #c0cbd5 !important;
 }
 
-.bar-fill {
-  height: 100%;
-  width: 0;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--teal), var(--yellow));
-  transition: width 0.6s ease;
+.level .bar {
+  height: 11px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: #39485b !important;
 }
 
-/* ---------- Language tabs ---------- */
+.level .bar-fill {
+  background: linear-gradient(
+    90deg,
+    #42b99a,
+    #d5e982,
+    #ffd66b
+  ) !important;
+  transition: width .6s ease;
+}
+
+/* CULTURAL PERKS CARD */
+
+.page .lg\:col-span-4 {
+  min-height: 100%;
+  border-radius: 21px !important;
+  background: linear-gradient(
+    145deg,
+    #263b50,
+    #18283b 75%,
+    #111c2c
+  ) !important;
+  box-shadow: 0 8px 22px rgba(25, 42, 65, .1);
+}
+
+.page .lg\:col-span-4 h3 {
+  font-size: 19px;
+  line-height: 1.4;
+}
+
+.page .lg\:col-span-4 p {
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+/* SECTION HEADINGS */
+
+.section-title {
+  gap: 12px;
+}
+
+.section-title h2 {
+  color: var(--navy) !important;
+  letter-spacing: -.8px;
+}
+
+#boardCount {
+  background: #fff !important;
+  color: var(--muted) !important;
+  border: 1px solid var(--sand);
+  border-radius: 100px !important;
+  box-shadow: none !important;
+  padding: 8px 13px !important;
+  white-space: nowrap;
+}
+
+/* LANGUAGE SWITCHER */
+
 .tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin: 32px 0 20px;
+  gap: 8px !important;
 }
 
 .tab {
-  padding: 10px 18px;
-  border-radius: 999px;
-  border: 1.5px solid var(--sand);
-  background: #fff;
-  font: inherit;
-  font-weight: 500;
-  color: var(--navy);
-  cursor: pointer;
+  min-height: 43px;
+  padding: 10px 17px !important;
+  border: 1px solid var(--sand) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  color: var(--navy) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+  transition: background .18s ease,
+    border-color .18s ease,
+    transform .18s ease;
 }
 
-.tab:hover { border-color: var(--mango); }
+.tab:hover {
+  border-color: var(--orange) !important;
+  transform: translateY(-1px);
+}
 
 .tab[aria-selected="true"] {
-  background: var(--mango);
-  border-color: var(--mango);
-  font-weight: 700;
+  background: var(--orange) !important;
+  border-color: var(--orange) !important;
+  color: var(--navy) !important;
+  box-shadow: 0 3px 0 #d97737 !important;
 }
 
-.tab:focus-visible,
-.card:focus-visible,
-.btn:focus-visible {
-  outline: 3px solid var(--teal);
-  outline-offset: 3px;
+.tab:active {
+  transform: translateY(1px);
 }
 
-.section-title {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin: 0 0 16px;
-}
+/* QUEST GRID */
 
-.section-title h2 { margin: 0; font-size: 26px; }
-.section-title span { color: var(--muted); font-size: 14px; }
-
-/* ---------- Quest cards ---------- */
-.grid {
+#questGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  align-items: stretch;
 }
 
-.card {
+/* CARDS CREATED BY YOUR JAVASCRIPT */
+
+#questGrid .card {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 22px;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 17px;
+  min-width: 0;
+  min-height: 265px;
+  padding: 22px !important;
+  border: 1px solid var(--sand) !important;
+  border-radius: 20px !important;
+  background: #fff !important;
+  color: var(--ink) !important;
   text-align: left;
-  font: inherit;
-  color: var(--navy);
-  background: #fff;
-  border: 2px solid var(--sand);
-  border-radius: 18px;
-  box-shadow: 0 4px 0 var(--sand);
-  cursor: pointer;
-  transition: transform 0.12s ease;
+  box-shadow: 0 3px 0 rgba(32, 45, 66, .025) !important;
+  transition: transform .2s ease,
+    box-shadow .2s ease,
+    border-color .2s ease;
 }
 
-.card:hover { transform: translateY(-2px); }
-.card:active { transform: translateY(3px); box-shadow: none; }
-
-.card.next {
-  border-color: var(--mango);
-  box-shadow: 0 4px 0 var(--mango-dark);
+#questGrid .card:hover {
+  transform: translateY(-4px);
+  border-color: #edb48d !important;
+  box-shadow: var(--shadow) !important;
 }
 
-.card.done { background: var(--teal-light); border-color: var(--teal); box-shadow: 0 4px 0 var(--teal-dark); }
+#questGrid .card:active {
+  transform: translateY(-1px);
+}
 
-.tag {
-  align-self: flex-start;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 12px;
+#questGrid .card > div:first-child {
+  flex-shrink: 0;
+}
+
+#questGrid .card h3 {
+  margin: 0 0 5px;
+  color: var(--navy) !important;
+  font-size: 23px;
   font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-.tag-next { background: var(--mango); color: var(--navy); }
-.tag-done { background: var(--teal); color: #fff; }
-
-.card h3 {
-  margin: 0;
-  font-size: 21px;
   line-height: 1.2;
+  letter-spacing: -.6px;
+  overflow-wrap: anywhere;
 }
 
-.card .local {
-  margin: 0;
-  font-size: 17px;
-  color: var(--muted);
-}
-
-.card .scenario {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--muted);
-}
-
-.meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: auto;
-  padding-top: 10px;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.dots { display: flex; gap: 4px; align-items: center; }
-.dots i {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #E7DDC8;
-}
-.dots i.on { background: var(--mango); }
-.dots span { margin-left: 6px; font-weight: 500; color: var(--muted); }
-
-.xp { color: var(--mango-dark); }
-
-/* ---------- Messages ---------- */
-.message {
-  padding: 24px;
-  border-radius: 14px;
-  background: #fff;
-  border: 2px dashed var(--sand);
-  color: var(--muted);
+#questGrid .card .local {
+  margin: 0 0 10px;
+  color: #b96c37 !important;
+  font-size: 15px;
+  font-weight: 600;
   line-height: 1.6;
 }
 
-.message.error {
-  background: #FDECEA;
-  border-color: #F2B8B2;
-  color: var(--error);
+#questGrid .card .scenario {
+  margin: 0;
+  color: var(--muted) !important;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.8;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 }
 
-.message code {
-  background: rgba(0,0,0,0.06);
-  padding: 2px 6px;
-  border-radius: 6px;
+/* Card labels */
+
+#questGrid .tag {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 6px 10px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  letter-spacing: .4px;
+  line-height: 1.3;
+  white-space: nowrap;
 }
 
-/* ---------- Coming soon ---------- */
+#questGrid .tag-next {
+  background: #fff0df !important;
+  color: #a85521 !important;
+}
+
+#questGrid .tag-done {
+  background: #e0f3e9 !important;
+  color: #267353 !important;
+}
+
+/* XP reward */
+
+#questGrid .xp {
+  display: inline-block;
+  padding: 6px 9px;
+  border-radius: 8px;
+  background: #fff3e6;
+  color: #ad5b25 !important;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* Card footer */
+
+#questGrid .meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 15px;
+  border-top: 1px solid #f0ece4 !important;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+#questGrid .dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+#questGrid .dots i {
+  flex-shrink: 0;
+  width: 7px !important;
+  height: 7px !important;
+  border-radius: 50%;
+  background: #e5e1d8 !important;
+}
+
+#questGrid .dots i.on {
+  background: var(--orange) !important;
+}
+
+#questGrid .dots span {
+  margin-left: 4px !important;
+  color: var(--muted) !important;
+  font-size: 11px;
+}
+
+/* Completed cards */
+
+#questGrid .card.bg-teal-50\/50,
+#questGrid .card[class*="border-[#2BA58A]"] {
+  background: #f2faf5 !important;
+  border-color: #c9e7d7 !important;
+}
+
+#questGrid .card.bg-teal-50\/50 .tag-done {
+  background: #dcefe4 !important;
+  color: #24694f !important;
+}
+
+/* Next quest */
+
+#questGrid .card.border-amber-400 {
+  background: var(--navy) !important;
+  border-color: var(--navy) !important;
+  box-shadow: 0 5px 0 var(--navy-dark) !important;
+}
+
+#questGrid .card.border-amber-400:hover {
+  border-color: var(--navy) !important;
+  box-shadow: 0 10px 24px rgba(25, 42, 65, .17) !important;
+}
+
+#questGrid .card.border-amber-400 h3 {
+  color: #fff !important;
+  font-size: 27px;
+}
+
+#questGrid .card.border-amber-400 .local {
+  color: var(--yellow) !important;
+}
+
+#questGrid .card.border-amber-400 .scenario {
+  color: #c7d1dc !important;
+}
+
+#questGrid .card.border-amber-400 .tag-next {
+  background: var(--orange) !important;
+  color: var(--navy) !important;
+}
+
+#questGrid .card.border-amber-400 .meta {
+  border-color: #405065 !important;
+}
+
+#questGrid .card.border-amber-400 .meta,
+#questGrid .card.border-amber-400 .dots span {
+  color: #c7d1dc !important;
+}
+
+#questGrid .card.border-amber-400 .dots i {
+  background: #435166 !important;
+}
+
+#questGrid .card.border-amber-400 .dots i.on {
+  background: var(--orange) !important;
+}
+
+#questGrid .card.border-amber-400 .xp {
+  background: rgba(255, 214, 107, .13);
+  color: var(--yellow) !important;
+}
+
+/* Loading and error messages */
+
+#questGrid .message {
+  grid-column: 1 / -1;
+  padding: 30px !important;
+  border: 1px dashed #d8cdbb !important;
+  border-radius: 18px !important;
+  background: #fff !important;
+  color: var(--muted) !important;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+#questGrid .message.error {
+  border-color: #efc1bb !important;
+  background: #fff0ee !important;
+  color: #a52e26 !important;
+}
+
+#questGrid .message code {
+  overflow-wrap: anywhere;
+}
+
+/* COMING SOON */
+
 .soon {
-  margin-top: 48px;
+  margin-top: 25px;
+  padding-top: 29px !important;
+  border-color: var(--sand) !important;
 }
 
-.soon h2 { font-size: 22px; margin: 0 0 14px; }
+.soon h2 {
+  color: var(--navy) !important;
+  font-size: 23px;
+  letter-spacing: -.5px;
+}
 
 .soon-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 10px !important;
 }
 
 .soon-item {
-  padding: 10px 16px;
-  border-radius: 999px;
-  border: 1.5px dashed var(--sand);
-  color: var(--muted);
-  font-size: 14px;
-  background: transparent;
+  padding: 11px 14px !important;
+  border: 1px solid var(--sand) !important;
+  border-radius: 11px !important;
+  background: #fff !important;
+  color: #727d88 !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  box-shadow: none !important;
+  transition: border-color .2s ease;
 }
 
-/* ---------- Quest detail dialog ---------- */
-dialog {
-  width: min(560px, calc(100vw - 32px));
-  max-height: calc(100vh - 48px);
+.soon-item:hover {
+  border-color: #e6b48e !important;
+}
+
+/* QUEST DIALOG */
+
+#questDialog {
+  width: min(570px, calc(100vw - 28px));
+  max-width: 570px;
+  max-height: 86vh;
+  margin: auto;
   padding: 0;
-  border: none;
-  border-radius: 20px;
+  border: 1px solid var(--sand);
+  border-radius: 22px;
   background: var(--cream);
-  color: var(--navy);
+  color: var(--ink);
+  box-shadow: 0 24px 90px rgba(15, 22, 38, .25);
   overflow: auto;
 }
 
-dialog::backdrop { background: rgba(15, 22, 38, 0.6); }
-
-.dlg-head {
-  position: relative;
-  padding: 28px 28px 22px;
-  background: var(--navy);
-  color: var(--cream);
+#questDialog::backdrop {
+  background: rgba(15, 22, 38, .65);
+  backdrop-filter: blur(5px);
 }
 
-.dlg-head h2 { margin: 0 0 4px; font-size: 26px; padding-right: 36px; }
-.dlg-head p  { margin: 0; color: #D9DEE8; }
+#questDialog .dlg-head {
+  position: relative;
+  padding: 27px 28px;
+  background: var(--navy) !important;
+  color: #fff !important;
+}
 
-.dlg-close {
+#questDialog .dlg-head h2 {
+  margin: 0 42px 6px 0;
+  color: #fff !important;
+  font-size: 29px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+#questDialog .dlg-head p {
+  margin: 0;
+  color: var(--yellow) !important;
+  font-size: 16px;
+}
+
+#questDialog .dlg-close {
   position: absolute;
-  top: 14px;
-  right: 14px;
+  top: 16px;
+  right: 16px;
+  display: grid;
+  place-items: center;
   width: 36px;
   height: 36px;
-  border: none;
+  border: 0;
   border-radius: 50%;
-  background: #2C3858;
-  color: var(--cream);
-  font-size: 18px;
+  background: #35465b !important;
+  color: #fff !important;
   cursor: pointer;
 }
 
-.dlg-body { padding: 24px 28px 28px; display: flex; flex-direction: column; gap: 20px; }
-
-.dlg-body h4 {
-  margin: 0 0 8px;
-  font-size: 13px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--muted);
+#questDialog .dlg-body {
+  gap: 22px;
 }
 
-.dlg-body p { margin: 0; line-height: 1.55; }
+#questDialog .dlg-body h4 {
+  margin-bottom: 9px;
+  color: #837563 !important;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
 
-.npc {
-  padding: 14px 16px;
-  border-radius: 14px;
+#questDialog #dlgScenario {
   background: #fff;
-  border: 1.5px solid var(--sand);
+  border: 1px solid var(--sand);
+  border-radius: 13px;
+  padding: 14px;
+  line-height: 1.8;
 }
 
-.npc b { display: block; margin-bottom: 4px; }
-.npc .line { font-size: 20px; margin-top: 8px; }
-
-.goals {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+#questDialog .npc {
+  border: 1px solid #efd7b3 !important;
+  border-radius: 16px !important;
+  background: #fff5e5 !important;
 }
 
-.goals li::before {
-  content: "◯";
-  color: var(--mango);
-  margin-right: 10px;
+#questDialog #dlgNpc {
+  color: var(--navy) !important;
 }
 
-.vocab {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+#questDialog #dlgNpcRole {
+  color: #895b2d;
 }
 
-.vocab div {
-  padding: 10px 12px;
+#questDialog #dlgOpening {
+  color: var(--navy) !important;
+  font-size: 21px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+#questDialog .goals li {
+  line-height: 1.65;
+}
+
+#questDialog .vocab > div {
+  min-width: 0;
+  background: #fff;
+  border: 1px solid var(--sand);
   border-radius: 12px;
-  background: #fff;
-  border: 1.5px solid #EADFCB;
+  overflow-wrap: anywhere;
 }
 
-.vocab strong { display: block; font-size: 17px; }
-.vocab em { display: block; font-style: normal; font-size: 13px; color: var(--muted); }
-
-.btn {
-  height: 54px;
-  border-radius: 14px;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font: inherit;
-  font-weight: 700;
-  font-size: 16px;
+#questDialog #dlgStart {
+  background: var(--orange) !important;
+  color: var(--navy) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 3px 0 #d77b3b;
   text-decoration: none;
-  cursor: pointer;
+  transition: transform .15s ease, background .15s ease;
 }
 
-.btn:active { transform: translateY(4px); box-shadow: none; }
+#questDialog #dlgStart:hover {
+  background: #ffad70 !important;
+  transform: translateY(-1px);
+}
 
-.btn-primary { background: var(--mango); color: var(--navy); box-shadow: 0 4px 0 var(--mango-dark); }
+/* RESPONSIVE TABLET */
 
-/* ---------- Phones ---------- */
+@media (max-width: 900px) {
+  .page {
+    width: calc(100% - 40px);
+    padding-top: 28px;
+  }
+
+  #questGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  #questGrid .card {
+    padding: 19px !important;
+  }
+
+  .hello h1 {
+    font-size: clamp(34px, 5vw, 46px);
+  }
+}
+
+/* RESPONSIVE MOBILE */
+
 @media (max-width: 600px) {
-  .topbar { padding: 14px 18px; }
-  .page   { padding: 28px 16px 48px; }
-  .vocab  { grid-template-columns: 1fr; }
+  .topbar {
+    padding: 12px 15px !important;
+  }
+
+  .topbar > div {
+    gap: 10px;
+  }
+
+  .logo {
+    gap: 8px !important;
+  }
+
+  .logo-mark {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 11px !important;
+  }
+
+  .logo-text {
+    font-size: 19px !important;
+  }
+
+  .top-right {
+    gap: 7px !important;
+  }
+
+  .stats {
+    gap: 7px !important;
+    padding: 7px 9px !important;
+  }
+
+  .stat {
+    gap: 4px !important;
+  }
+
+  .stat b {
+    font-size: 14px !important;
+  }
+
+  .user-chip {
+    gap: 5px !important;
+    padding: 5px 7px !important;
+  }
+
+  .user-chip #userName {
+    display: none !important;
+  }
+
+  .user-chip .avatar {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .link-btn {
+    font-size: 10px !important;
+  }
+
+  .page {
+    width: calc(100% - 32px);
+    padding-top: 23px;
+    padding-bottom: 45px;
+  }
+
+  .guest-banner {
+    margin-bottom: 20px;
+    padding: 13px !important;
+    font-size: 12px !important;
+  }
+
+  .hello h1 {
+    font-size: clamp(33px, 9vw, 43px);
+    line-height: 1.08;
+    letter-spacing: -1.4px;
+  }
+
+  .hello p {
+    font-size: 14px !important;
+    line-height: 1.8;
+  }
+
+  .level {
+    padding: 19px !important;
+    border-radius: 17px !important;
+  }
+
+  .level .level-row {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .level #levelHint {
+    font-size: 10px !important;
+  }
+
+  .page .lg\:col-span-4 {
+    padding: 21px !important;
+    border-radius: 17px !important;
+  }
+
+  .section-title h2 {
+    font-size: 23px !important;
+  }
+
+  #boardCount {
+    padding: 7px 9px !important;
+    font-size: 10px !important;
+  }
+
+  .tabs {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 7px !important;
+  }
+
+  .tab {
+    width: 100%;
+    min-height: 42px;
+    text-align: center;
+  }
+
+  #questGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 13px;
+  }
+
+  #questGrid .card {
+    min-height: 225px;
+    padding: 20px !important;
+    border-radius: 17px !important;
+  }
+
+  #questGrid .card h3 {
+    font-size: 23px;
+  }
+
+  #questGrid .card.border-amber-400 h3 {
+    font-size: 27px;
+  }
+
+  .soon {
+    margin-top: 12px;
+  }
+
+  .soon-item {
+    font-size: 11px !important;
+  }
+
+  #questDialog {
+    width: calc(100vw - 24px);
+    max-height: 88vh;
+    border-radius: 18px;
+  }
+
+  #questDialog .dlg-head {
+    padding: 23px 20px;
+  }
+
+  #questDialog .dlg-head h2 {
+    font-size: 25px;
+  }
+
+  #questDialog .dlg-body {
+    padding: 20px !important;
+  }
+
+  #questDialog .dlg-body > div:last-of-type {
+    grid-template-columns: 1fr;
+  }
+
+  #questDialog .dlg-body > .pt-4 {
+    flex-wrap: wrap;
+  }
+
+  #questDialog .dlg-body > .pt-4 > * {
+    flex: 1;
+  }
+}
+
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
 }
