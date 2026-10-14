@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quest SG — Quest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+Tamil:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="homepage.html" class="logo">
+        <span class="logo-mark">Q</span>
+        <span class="logo-text">Quest SG</span>
+      </a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="homepage.html" aria-current="page">Quests</a>
+        <a href="review.html">Mistake log</a>
+        <a href="profile.html">Profile</a>
+      </nav>
+      <div class="top-right">
+        <div class="stats" aria-label="Your progress">
+          <span class="stat-streak" title="Days in a row">🔥 <b id="streakNum">0</b></span>
+          <span class="divider-line"></span>
+          <span class="stat-xp" title="Total XP">⭐ <b id="xpNum">0</b></span>
+        </div>
+        <a href="profile.html" class="user-chip">
+          <span class="avatar" id="avatar">G</span>
+          <span id="userName">Guest</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <p class="notice notice-error" id="pageError" hidden></p>
+
+    <div class="quest-layout" id="questLayout" hidden>
+
+      <!-- LEFT: quest details -->
+      <aside class="quest-side">
+        <a href="homepage.html" class="back-link">← Back to quest board</a>
+
+        <section class="card card-navy">
+          <div class="row">
+            <span class="pill pill-orange" id="questDifficulty"></span>
+            <span class="pill pill-xp" id="questXp"></span>
+          </div>
+          <h1 id="questTitle"></h1>
+          <p class="local" id="questLocal"></p>
+          <p class="scene" id="questScenario"></p>
+        </section>
+
+        <section class="card">
+          <h2 class="side-title">Who you're talking to</h2>
+          <p class="npc-name" id="npcName"></p>
+          <p class="npc-role" id="npcRole"></p>
+        </section>
+
+        <section class="card">
+          <h2 class="side-title">Your goals</h2>
+          <ul class="goals" id="goalList"></ul>
+        </section>
+
+        <section class="card card-yellow">
+          <h2 class="side-title">Useful words <span>(tap to add)</span></h2>
+          <div class="vocab" id="vocabList"></div>
+        </section>
+      </aside>
+
+      <!-- RIGHT: the chat -->
+      <section class="chat-panel" aria-label="Roleplay chat">
+        <div class="chat-head">
+          <span class="npc-avatar" id="npcInitial"></span>
+          <div>
+            <p class="chat-name" id="chatName"></p>
+            <p class="chat-status">AI roleplay partner · mixing English is OK</p>
+          </div>
+          <span class="pill pill-teal" id="demoBadge" hidden>Practice mode</span>
+        </div>
+
+        <div class="chat-log" id="chatLog" aria-live="polite"></div>
+
+        <form class="composer" id="composer">
+          <button type="button" class="mic-btn" id="micBtn" aria-label="Speak your reply" hidden>🎤</button>
+          <label class="sr-only" for="msgInput">Your reply</label>
+          <input id="msgInput" type="text" autocomplete="off" maxlength="300">
+          <button type="submit" class="btn btn-navy" id="sendBtn">Send</button>
+        </form>
+
+        <div class="chat-foot">
+          <span class="small muted" id="goalHint">Hit the goals on the left, then finish the quest.</span>
+          <button type="button" class="btn btn-primary" id="finishBtn" disabled>Finish quest</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- QUEST COMPLETE POPUP -->
+  <dialog class="done-dialog" id="doneDialog" aria-labelledby="doneTitle">
+    <div class="done-head">
+      <div class="done-star" aria-hidden="true">⭐</div>
+      <p class="eyebrow">Quest complete</p>
+      <h2 id="doneTitle">Well done!</h2>
+      <p id="doneSub"></p>
+    </div>
+    <div class="done-body">
+      <div class="done-stats">
+        <div class="stat-box"><span class="label">XP earned</span><b id="doneXp">+0</b></div>
+        <div class="stat-box"><span class="label">Streak</span><b id="doneStreak">0 days</b></div>
+        <div class="stat-box"><span class="label">Goals hit</span><b id="doneGoals">0 / 0</b></div>
+      </div>
+
+      <div class="level-box">
+        <div class="row"><b id="doneLevel">Level 1</b><span class="muted" id="doneLevelHint"></span></div>
+        <div class="bar"><div class="bar-fill" id="doneBar"></div></div>
+      </div>
+
+      <div class="remember" id="rememberBox" hidden>
+        <h3>Things to remember</h3>
+        <ul id="rememberList"></ul>
+      </div>
+
+      <div class="bonus">
+        <p class="eyebrow">Real-world bonus · coming soon</p>
+        <p>Try this conversation in real life and send a voice note as proof for +100 XP.</p>
+      </div>
+
+      <div class="done-actions">
+        <a class="btn btn-primary" id="nextQuestBtn" href="homepage.html">Next quest</a>
+        <a class="btn btn-ghost" href="review.html">Mistake log</a>
+        <a class="btn btn-ghost" href="homepage.html">Quest board</a>
+      </div>
+    </div>
+  </dialog>
+
+  <script type="module" src="quest.js"></script>
+</body>
+</html>

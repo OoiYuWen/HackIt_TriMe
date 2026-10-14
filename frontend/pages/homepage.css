@@ -926,3 +926,9 @@ a:focus-visible {
     transition-duration: .01ms !important;
   }
 }
+
+/* Make the NPC name readable on the dark "Up next" card */
+
+#questGrid .card.border-amber-400 .meta > span:last-child {
+  color: var(--cream) !important;
+}
